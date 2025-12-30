@@ -42,4 +42,21 @@ analizarBtn.addEventListener("click", async () => {
     // Mostrar toda la respuesta si falla
     console.log(data);
 
-    let
+    let analysis = "No se obtuvo respuesta válida.";
+    if (data.output && data.output[0] && data.output[0].content) {
+      analysis = data.output[0].content[0].text;
+    }
+
+    resultadoEl.textContent = "### RESULTADO DE GEMINI ###\n\n" + analysis;
+
+    // Generar TXT
+    const blob = new Blob([analysis], { type: "text/plain" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "informe_gemini.txt";
+    a.click();
+
+  } catch (err) {
+    resultadoEl.textContent = "⚠️ Error: " + err.message;
+  }
+});
